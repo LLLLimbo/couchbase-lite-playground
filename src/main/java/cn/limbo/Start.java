@@ -28,12 +28,12 @@ public class Start {
       e.printStackTrace();
     }
 
-
     ReplicatorConfiguration replConfig =
         new ReplicatorConfiguration(database, new
             URLEndpoint(new URI("ws://192.168.14.149:4984/traveldb")));
 
-    replConfig.setAuthenticator(new BasicAuthenticator("iotd-knshi38h", "a8996855439".toCharArray()))
+    replConfig.setAuthenticator(
+            new BasicAuthenticator("iotd-knshi38h", "a8996855439".toCharArray()))
         .setType(ReplicatorType.PULL)
 //        .setChannels(List.of("*"))
         .setContinuous(true)
@@ -41,12 +41,10 @@ public class Start {
 
     Replicator replicator = new Replicator(replConfig);
 
-
-    replicator.addChangeListener(change -> {
-      if (change.getStatus().getError() != null) {
-        System.out.println(change.getStatus().getError().getInfo());
-      }
-      System.out.println(change.getStatus().getProgress().getTotal());
+    replicator.addDocumentReplicationListener(documentReplication -> {
+      documentReplication.getDocuments().forEach(replicatedDocument -> {
+        System.out.println(replicatedDocument.getID());
+      });
     });
 
 //    Start replication.
