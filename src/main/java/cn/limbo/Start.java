@@ -41,13 +41,11 @@ public class Start {
 
     Replicator replicator = new Replicator(replConfig);
 
-    replicator.addDocumentReplicationListener(documentReplication -> {
-      documentReplication.getDocuments().forEach(replicatedDocument -> {
-        System.out.println(replicatedDocument.getID());
-      });
-    });
+    replicator.addDocumentReplicationListener(
+        documentReplication -> documentReplication.getDocuments()
+            .forEach(replicatedDocument -> System.out.println(replicatedDocument.getID())));
 
-//    Start replication.
+    //Start replication.
     replicator.start(false);
   }
 
